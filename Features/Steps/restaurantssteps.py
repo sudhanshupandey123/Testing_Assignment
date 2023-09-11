@@ -16,7 +16,6 @@ paths = {
     'restaurant_rating_xpath': "//span[@class='ceNzKf']/preceding-sibling::span",
     'restaurants_address_xpath': "(//div[@class='rogA2c ']/child::div)[1]",
     'restaurant_review_xpath': "(//div[@class='F7nice ']/child::span)[2]",
-    # "//*[@class='Nv2PK THOPZb CpccDe ']/child::a"
 }
 
 
@@ -124,13 +123,9 @@ def making_csv(context):
     :param context:
     :return:
     """
-    empty_d = []
-    if context.interest not in empty_d:
-        empty_d.append(context.interest)
         field_names = ['name', 'rating', 'address', 'review', 'Log_and_Lat']
         with open(f'{context.interest}.csv', 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=field_names)
             writer.writeheader()
             writer.writerows(context.details)
-    empty_d.append(context.interest)
     context.driver.quit()
