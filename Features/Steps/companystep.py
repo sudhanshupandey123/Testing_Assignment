@@ -13,7 +13,6 @@ Details = []
 '''Paths used '''
 paths={
     'input_box_xpath':"//*[@type='search']",
-    # 'company_name_xpath':"(//*[@class='SPZz6b']/descendant::span)[1]",
     'company_name_xpath':"(//div[@class='SPZz6b']/child::h2)/child::span",
     'company_address_xpath':"(//span[@class='LrzXr'])",
     'company_rating_xpath':"(//*[@class='CJQ04']/descendant::span)[1]",
