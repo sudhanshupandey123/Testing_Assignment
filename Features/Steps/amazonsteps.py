@@ -9,13 +9,13 @@ import re
 
 '''Used Paths '''
 x_paths = {
-    "INPUT_AREA": "//input[@id='twotabsearchtextbox']",
-    "INPUT_CLICK": "//input[@id='nav-search-submit-button']",
-    "ADD_TO_CART": "//input[@id='add-to-cart-button']",
-    'rating_box_xpath':"(//li[@id='p_72/1318476031']/ancestor::ul)/descendant::li",
-    'filtered_product_list_xpath':"//h2[@class='a-size-mini a-spacing-none a-color-base s-line-clamp-2']/child::a",
-    'added_product_price_list_xpath':"//div[@class='sc-badge-price-to-pay']",
-    'total_price_showing_after_added_to_cart_xpath':"(//span[@class='a-size-medium a-color-base sc-price sc-white-space-nowrap'])[1]",
+    'INPUT_AREA': "//input[@id='twotabsearchtextbox']",
+    'INPUT_CLICK': "//input[@id='nav-search-submit-button']",
+    'ADD_TO_CART': "//input[@id='add-to-cart-button']",
+    'RATING_BOX': "(//li[@id='p_72/1318476031']/ancestor::ul)/descendant::li",
+    'FILTERED_BOX': "//h2[@class='a-size-mini a-spacing-none a-color-base s-line-clamp-2']/child::a",
+    'PRICE_BOX': "//div[@class='sc-badge-price-to-pay']",
+    'TOTAL_PRICE': "(//span[@class='a-size-medium a-color-base sc-price sc-white-space-nowrap'])[1]",
 }
 
 
@@ -50,22 +50,23 @@ def filter_product_based_on_rating(context, rating_value):
     :param rating_value: Value of rating based on which we want to filter It is of str type
     """
     context.wait = WebDriverWait(context.driver, 10)
-    rating_list = context.driver.find_elements(By.XPATH, x_paths['rating_box_xpath'])
+    rating_list = context.driver.find_elements(By.XPATH, x_paths['RATING_BOX'])
+    context.driver.implicit_wait(10)
     if float(rating_value) >= 4 and float(rating_value) <= 5:
         rating_list[0].click()
-        time.sleep(5)
+        
 
     elif float(rating_value) >= 3 and float(rating_value) <= 4:
         rating_list[1].click()
-        time.sleep(5)
+        
 
     elif float(rating_value) >= 2 and float(rating_value) <= 3:
         rating_list[2].click()
-        time.sleep(5)
+        
 
     elif float(rating_value) >= 1 and float(rating_value) <= 2:
         rating_list[3].click()
-        time.sleep(5)
+        
 
     else:
         raise Exception('Please Enter Valid Rating Value :')
@@ -80,7 +81,7 @@ def add_to_cart(context, product_count):
     """
     count = 0
     product_list = context.driver.find_elements(By.XPATH,
-                                       x_paths['filtered_product_list_xpath'])
+                                       x_paths['FILTERED_BOX'])
     for i in range(1, len(product_list)):
         if count == int(product_count):
             break
@@ -109,12 +110,12 @@ def checking_summarized_and_actual_price(context):
     """
     actual_price = 0
     context.driver.find_element(By.XPATH, "//div[@id='nav-cart-count-container']").click()
-    price_list = context.driver.find_elements(By.XPATH, x_paths['added_product_price_list_xpath'])
+    price_list = context.driver.find_elements(By.XPATH, x_paths['PRICE_BOX'])
     for i in range(len(price_list)):
         print(price_list[i].text)
         actual_price += float(price_list[i].text.replace(',', ''))
     summarized_price = context.driver.find_element(By.XPATH,
-                                                   x_paths['total_price_showing_after_added_to_cart_xpath']).text
+                                                   x_paths['TOTAL_PRICE']).text
     print(summarized_price)
     try:
         assert float(summarized_price.replace(',', '')) == actual_price, 'Cart Is Not Performing'
